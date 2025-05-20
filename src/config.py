@@ -1,5 +1,8 @@
 from flask import Flask 
 from src.database.coneccion import db
+from src.purificadora.models import Purificadora, Calificacion
+from src.rutinas.models import Rutina
+from src.usuarios.models import Usuario
 
 def create_app():
     
