@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+
 db = SQLAlchemy()
 
 class Usuario(db.Model):
@@ -14,7 +15,6 @@ class Usuario(db.Model):
     numero_interior = db.Column(db.String(50))
     numero_exterior = db.Column(db.String(50))
     colonia = db.Column(db.String(255))
-    zona = db.Column(db.String(255))
     creado_en = db.Column(db.DateTime, default=datetime.utcnow)
 
     rutinas = db.relationship('Rutina', backref='usuario', cascade='all, delete-orphan')

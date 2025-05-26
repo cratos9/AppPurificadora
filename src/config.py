@@ -1,4 +1,4 @@
-from flask import Flask 
+from flask import Flask, redirect, url_for
 from src.database.coneccion import db
 
 def create_app():
@@ -12,11 +12,14 @@ def create_app():
     
     db.init_app(app)
     
+    from src.usuarios.routes import bp as usuarios_bp
+    app.register_blueprint(usuarios_bp, url_prefix='/usuarios')
+    
     with app.app_context():
         db.create_all()
     
     @app.route('/')
     def index():
-        return "Hello, World!"
+        return redirect(url_for('usuarios.inicio_sesion'))
     
     return app

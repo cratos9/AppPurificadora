@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar sesion{% endblock %}
+
+<!-- {% block style %} <link rel="stylesheet" href="style.css"> {% endblock %} -->
+
+{% block content %}
+    <h1>Inicio de sesion</h1>
+    <form method="POST">
+        <label for="telefono">Telefono:</label>
+        <input type="number" id="telefono" name="telefono" required>
+        <label for="contrasena">Contrasena:</label>
+        <input type="password" id="contrasena" name="contrasena" required>
+        <button type="submit">Iniciar sesion</button>
+    </form>
+{% endblock %}

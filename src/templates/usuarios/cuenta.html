@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar sesion{% endblock %}
+
+<!-- {% block style %} <link rel="stylesheet" href="style.css"> {% endblock %} -->
+
+{% block content %}
+    <h1>Información de tu cuenta</h1>
+    <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+    <p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+    <p><strong>Calle:</strong> {{ usuario.calle }}</p>
+    <p><strong>Colonia:</strong> {{ usuario.colonia }}</p>
+    <hr>
+    
+    <form action="{{ url_for('usuarios.cerrar_sesion') }}" method="GET">
+        <button type="submit">Cerrar sesión</button>
+    </form>
+    
+    <form action="{{ url_for('usuarios.modificar_cuenta', id=usuario.id) }}" method="GET">
+        <button type="submit">Modificar cuenta</button>
+    </form>
+    
+    <form action="{{ url_for('usuarios.eliminar_cuenta', id=usuario.id) }}" method="POST">
+        <button type="submit">Eliminar cuenta</button>
+    </form>
+{% endblock %}
