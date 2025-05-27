@@ -46,6 +46,12 @@ def inicio_sesion():
         if usuario:
             session.clear()
             session['usuario_id'] = usuario.id
+            session['telefono'] = usuario.telefono
+            session['nombre'] = usuario.nombre
+            session['calle'] = usuario.calle
+            session['numero_interior'] = usuario.numero_interior
+            session['numero_exterior'] = usuario.numero_exterior
+            session['colonia'] = usuario.colonia
             g.usuario = usuario
             flash("Inicio de sesión exitoso")
             return redirect(url_for('usuarios.inicio_sesion'))

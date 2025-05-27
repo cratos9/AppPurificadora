@@ -13,7 +13,10 @@ def create_app():
     db.init_app(app)
     
     from src.usuarios.routes import bp as usuarios_bp
-    app.register_blueprint(usuarios_bp, url_prefix='/usuarios')
+    app.register_blueprint(usuarios_bp)
+    
+    from src.rutinas.routes import bp as rutinas_bp
+    app.register_blueprint(rutinas_bp)
     
     with app.app_context():
         db.create_all()
