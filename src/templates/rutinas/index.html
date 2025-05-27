@@ -5,6 +5,10 @@
 <!-- {% block style %} <link rel="stylesheet" href="style.css"> {% endblock %} -->
 
 {% block content %}
+<nav>
+    <a href="{{ url_for('usuarios.cuenta', id = session.usuario_id) }}">Perfil</a>
+    <span>{{ session.nombre }}</span>
+</nav>
     <h1>index</h1>
     {% if rutinas %}
         {% for rutina in rutinas %}

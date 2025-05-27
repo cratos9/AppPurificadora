@@ -1,0 +1,60 @@
+body {
+    background-image: url("../fondos/fondo_autenticacion.png");
+    background-size: cover;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.card {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    width: 40%;
+    padding: 2rem;
+    margin: 150px auto;
+}
+
+label, input {
+    display: block;
+    width: 95%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+input {
+    color: #fff;
+    border: 1px solid #387782;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+button {
+    padding: 0.5rem;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    cursor: pointer;
+
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+a {
+    color: #387782;
+    text-decoration: none;
+}

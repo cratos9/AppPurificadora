@@ -2,26 +2,21 @@
 
 {% block title %}Registrar Usuario{% endblock %}
 
-<!-- {% block style %} <link rel="stylesheet" href="style.css"> {% endblock %} -->
+{% block style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/autentication.css') }}"> {% endblock %}
 
 {% block content %}
-    <h1>Registrar Usuario</h1>
+    <div class="card">
+        <h1>Registrar Usuario</h1>
     <form method="POST">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
-        <label for="telefono">Telefono:</label>
-        <input type="number" id="telefono" name="telefono" required>
-        <label for="contrasena">Contrasena:</label>
-        <input type="password" id="contrasena" name="contrasena" required>
-        <label for="calle">Calle:</label>
-        <input type="text" id="calle" name="calle" required>
-        <label for="numero_interior">Numero interior:</label>
-        <input type="number" id="numero_interior" name="numero_interior" required>
-        <label for="numero_exterior">Numero exterior:</label>
-        <input type="number" id="numero_exterior" name="numero_exterior" required>
-        <label for="colonia">Colonia:</label>
-        <input type="text" id="colonia" name="colonia" required>
+        <input type="text" id="nombre" name="nombre" required placeholder="Nombre completo">
+        <input type="number" id="telefono" name="telefono" required placeholder="Telefono">
+        <input type="password" id="contrasena" name="contrasena" required placeholder="Contraseña">
+        <input type="text" id="calle" name="calle" required placeholder="Calle">
+        <input type="number" id="numero_interior" name="numero_interior" required placeholder="Numero interior">
+        <input type="number" id="numero_exterior" name="numero_exterior" required placeholder="Numero exterior">
+        <input type="text" id="colonia" name="colonia" required placeholder="Colonia">
         <button type="submit">Registrar</button>
     </form>
     <p>¿Ya tienes una cuenta? <a href="{{ url_for('usuarios.inicio_sesion' ) }}">Inicia sesión</a></p>
+    </div>
 {% endblock %}
