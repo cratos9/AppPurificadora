@@ -68,17 +68,16 @@ def modificar_cuenta(id):
             flash("Error al modificar la cuenta")
     return render_template("usuarios/modificar_cuenta.html")
 
-@bp.route("/EliminarCuenta/<int:id>", methods=['POST'])
+@bp.route("/EliminarCuenta/<int:id>", methods=['POST', 'GET'])
 @login_required
 def eliminar_cuenta(id):
     if request.method == 'POST':
         telefono = request.form.get('telefono')
         contrasena = request.form.get('contrasena')
-        usuario = IniciarSesion(telefono, contrasena)
-        if usuario and usuario.id == id:
+        if telefono != session.get('telefono') and contrasena:
             EliminarCuenta(telefono, contrasena)
-        session.clear()
-        return redirect(url_for('usuarios.registrar'))
+            session.clear()
+            return redirect(url_for('usuarios.registrar'))
     return render_template("usuarios/eliminar_cuenta.html")
 
 @bp.route('/CerrarSesion')

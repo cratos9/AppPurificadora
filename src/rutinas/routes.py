@@ -44,7 +44,7 @@ def eliminar_rutina(rutina_id):
     
     return redirect(url_for('Rutinas.index'))
 
-@bp.route('/index', methods=['GET'])
+@bp.route('/index', methods=['GET', 'POST'])
 def index():
     rutinas = Rutina.query.all()
     return render_template('rutinas/index.html', rutinas=rutinas)

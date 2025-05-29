@@ -5,39 +5,53 @@
 <!-- {% block style %} <link rel="stylesheet" href="style.css"> {% endblock %} -->
 
 {% block content %}
+{% if rutinas|length == 0 %}
 <nav>
     <a href="{{ url_for('usuarios.cuenta', id = session.usuario_id) }}">Perfil</a>
     <span>{{ session.nombre }}</span>
+    <a href="{{ url_for('Rutinas.crear_rutina' ) }}">Crear rutina</a>
 </nav>
-    <h1>index</h1>
-    {% if rutinas %}
-        {% for rutina in rutinas %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Lunes</th>
-                        <th>Martes</th>
-                        <th>Miércoles</th>
-                        <th>Jueves</th>
-                        <th>Viernes</th>
-                        <th>Sábado</th>
-                        <th>Domingo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{% if 'Lunes' in rutina.dias %}hola{% endif %}</td>
-                        <td>{% if 'Martes' in rutina.dias %}hola{% endif %}</td>
-                        <td>{% if 'Miércoles' in rutina.dias %}hola{% endif %}</td>
-                        <td>{% if 'Jueves' in rutina.dias %}hola{% endif %}</td>
-                        <td>{% if 'Viernes' in rutina.dias %}hola{% endif %}</td>
-                        <td>{% if 'Sábado' in rutina.dias %}hola{% endif %}</td>
-                        <td>{% if 'Domingo' in rutina.dias %}hola{% endif %}</td>
-                    </tr>
-                </tbody>
-            </table>
-        {% endfor %}
-    {% else %}
-        
-    {% endif %}
+<h2>No tienes registrada ninguna rutina</h2>
+{% endif %}
+{% for rutina in rutinas %}
+{% if rutina.usuario_id == session.usuario_id %}
+<nav>
+    <a href="{{ url_for('usuarios.cuenta', id = session.usuario_id)}}">Perfil</a>
+    <span>{{ session.nombre }}</span>
+    <a href="{{ url_for('Rutinas.modificar_rutina', id = rutinas.id)}}">Modificar rutina</a>
+    <a href="{{ url_for('Rutinas.eliminar_rutina', id = rutina.id)}}">Eliminar rutina</a>
+</nav>
+<table>
+    <thead>
+        <tr>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miércoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+            <th>Sábado</th>
+            <th>Domingo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{% if 'Lunes' in rutina.dias %}hola{% endif %}</td>
+            <td>{% if 'Martes' in rutina.dias %}hola{% endif %}</td>
+            <td>{% if 'Miércoles' in rutina.dias %}hola{% endif %}</td>
+            <td>{% if 'Jueves' in rutina.dias %}hola{% endif %}</td>
+            <td>{% if 'Viernes' in rutina.dias %}hola{% endif %}</td>
+            <td>{% if 'Sábado' in rutina.dias %}hola{% endif %}</td>
+            <td>{% if 'Domingo' in rutina.dias %}hola{% endif %}</td>
+        </tr>
+    </tbody>
+</table>
+{% else %}
+<nav>
+    <a href="{{ url_for('usuarios.cuenta', id = session.usuario_id) }}">Perfil</a>
+    <span>{{ session.nombre }}</span>
+    <a href="{{ url_for('Rutinas.crear_rutina' ) }}">Crear rutina</a>
+</nav>
+<h2>No tienes registrada ninguna rutina</h2>
+{% endif %}
+{% endfor %}
 {% endblock %}
