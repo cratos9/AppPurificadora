@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Entregas Completadas{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}">
+{% endblock %}
+
+{% block content %}
+{% if session.nombre == 'Purificadora' and session.usuario_tipo == 'purificadora' %}
+<div class="card">
+    <nav>
+        <a href="{{ url_for('Purificadora.index') }}">Regresar</a>
+    </nav>
+    <hr>
+    <section>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Visitas en el último mes</th>
+                    <th>Completadas</th>
+                    <th>Porcentaje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ total_visitas }}</td>
+                    <td>{{ completadas }}</td>
+                    <td>{{ porcentaje|round(2) }}%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Detalle de visitas</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visita in visitas %}
+                <tr>
+                    <td>{{ visita.fecha }}</td>
+                    <td>{{ visita.verificado }}</td>
+                    <td>{{ visita.observaciones }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% else %}
+<p>No tienes el permiso de estar aquí</p>
+<a href="{{ url_for('usuarios.inicio_sesion') }}">Inicia Sesión</a>
+{% endif %}
+{% endblock %}

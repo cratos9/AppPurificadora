@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Principal{% endblock %}
+
+{% block style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}"> {% endblock %}
+
+{% block content %}
+{% if session.nombre == 'Purificadora' and session.usuario_tipo == 'purificadora' %}
+<div class="card">
+    <nav>
+        <a href="{{ url_for('Purificadora.registrar_ruta' ) }}">Nueva ruta</a>
+        <a href="{{ url_for('Purificadora.index' ) }}">Regresar</a>
+    </nav>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Zona</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ruta in rutas %}
+            <tr>
+                <td>{{ ruta.nombre }}</td>
+                <td>{{ ruta.descripcion }}</td>
+                <td>{{ ruta.zona }}</td>
+                <td><a href="{{ url_for('Purificadora.eliminar_ruta', ruta_id=ruta.id) }}" class="Eliminar">Eliminar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Ver Repartidores{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}">
+{% endblock %}
+
+{% block content %}
+{% if session.nombre == 'Purificadora' and session.usuario_tipo == 'purificadora' %}
+<div class="card">
+    <nav>
+        <a href="{{ url_for('Purificadora.registrar_repartidor') }}">Nuevo repartidor</a>
+        <a href="{{ url_for('Purificadora.index') }}">Regresar</a>
+    </nav>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for repartidor in repartidores %}
+            <tr>
+                <td>{{ repartidor.nombre }}</td>
+                <td>{{ repartidor.telefono }}</td>
+                <td>
+                    <a href="{{ url_for('Purificadora.eliminar_repartidor', repartidor_id=repartidor.id) }}" class="Eliminar">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

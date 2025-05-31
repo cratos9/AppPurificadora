@@ -1,0 +1,49 @@
+<!-- Ejemplo de usuario hipotético:
+{
+    "nombre": "Juan",
+    "usuario_tipo": "purificadora"
+}
+-->
+{% extends 'base.html' %}
+
+{% block title %}Ver Pagos{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}">
+{% endblock %}
+
+{% block content %}
+{% if session.nombre == 'Purificadora' and session.usuario_tipo == 'purificadora' %}
+<div class="card">
+    <nav>
+        <a href="{{ url_for('Purificadora.index' ) }}">Regresar</a>
+    </nav>
+    <hr>
+    <section>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Método</th>
+                    <th>Monto</th>
+                    <th>Referencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pago in pagos %}
+                <tr>
+                    <td>{{ pago.fecha }}</td>
+                    <td>{{ pago.metodo }}</td>
+                    <td>{{ pago.monto }}</td>
+                    <td>{{ pago.referencia }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% else %}
+<p>No tienes el permiso de estar aqui</p>
+<a href="{{ url_for('usuarios.inicio_sesion') }}">Inicia Sesion</a>
+{% endif %}
+{% endblock %}

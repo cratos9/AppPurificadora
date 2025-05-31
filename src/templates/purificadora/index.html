@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Principal{% endblock %}
+
+{% block style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}"> {% endblock %}
+
+{% block content %}
+{% if session.nombre == 'Purificadora' and session.usuario_tipo == 'purificadora' %}
+<div class="card">
+    <nav>
+        <div class="rutinas">
+            <a href="{{ url_for('Purificadora.ver_pagos' ) }}">Ver pagos</a>
+            <a href="{{ url_for('Purificadora.ruta_entrega' ) }}">Zonas de entrega</a>
+        </div>
+        <div class="rutas">
+            <a href="{{ url_for('Purificadora.ver_rutas' ) }}">Rutas</a>
+        </div>
+        <div class="repartidores">
+            <a href="{{ url_for('Purificadora.entregas_completadas' ) }}">Entregas completadas</a>
+            <a href="{{ url_for('Purificadora.ver_repartidores' ) }}">Empleados</a>
+        </div>
+        <div class="perfil">
+            <a href="{{ url_for('Purificadora.cerrar_sesion') }}">Cerrar sesión</a>
+        </div>
+    </nav>
+    <hr>
+    <section>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set horas = ["9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM"] %}
+                {% set dias = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"] %}
+                {% for hora in horas %}
+                <tr>
+                    <td>{{ hora }}</td>
+                    {% for dia in dias %}
+                    <td>
+                        {% for tarea in tareas %}
+                            {% if tarea.dia == dia and tarea.hora == hora %}
+                                {{ tarea.nombre }}<br>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% else %}
+<p>No tienes el permiso de estar aqui</p>
+<a href="{{ url_for('usuarios.inicio_sesion' ) }}">Inicia Sesion</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Registrar Repartidor{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}">
+{% endblock %}
+
+{% block content %}
+{% if session.nombre == 'Purificadora' and session.usuario_tipo == 'purificadora' %}
+<div class="card">
+    <nav>
+        <a href="{{ url_for('Purificadora.ver_repartidores') }}">Regresar</a>
+    </nav>
+    <h1>Registrar nuevo repartidor</h1>
+    <form method="post">
+        <input id="nombre" name="nombre" type="text" required placeholder="Nombre"/>
+        <input id="telefono" name="telefono" type="text" required placeholder="Teléfono"/>
+        <button type="submit">Guardar</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

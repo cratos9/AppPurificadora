@@ -93,12 +93,3 @@ def EliminarRutina(rutina_id):
     except:
         db.session.rollback()
         return False
-    
-def InicioSesionPurificadora(contrasena):
-    try:
-        if contrasena == "contrasena_segura": 
-            return True
-        else:
-            return False
-    except:
-        return False

@@ -1,0 +1,120 @@
+body {
+    background-image: url("../../fondos/fondo_purificadora.jpg");
+    background-size: cover;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    width: 90%;
+    padding: 2rem;
+    margin: 20px auto;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 1rem 0;
+}
+
+a {
+    color: #fff;
+    font-size: large;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    margin: 0 1rem 0 0; 
+}
+
+a:hover {
+    color: #58a9d4;
+}
+
+nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+div{
+    display: inline-block;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table tr {
+    height: 50px;
+    text-align: center;
+}
+
+label, input {
+    display: block;
+    width: 95%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+input {
+    color: #fff;
+    border: 1px solid #387782;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+button {
+    padding: 0.5rem;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    cursor: pointer;
+
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+a {
+    color: #387782;
+    text-decoration: none;
+    border: 1px solid #387782;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+textarea {
+    display: block;
+    width: 95%;
+    margin-bottom: 1rem;
+    color: #fff;
+    border: 1px solid #387782;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: transparent;
+}
+
+.Eliminar {
+    border: 1px solid red;
+    color: red;
+}
+
+.Eliminar:hover {
+    color : #f009;
+    background-color: rgba(255, 0, 0, 0.1);
+}

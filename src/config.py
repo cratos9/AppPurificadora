@@ -18,6 +18,9 @@ def create_app():
     from src.rutinas.routes import bp as rutinas_bp
     app.register_blueprint(rutinas_bp)
     
+    from src.purificadora.routes import bp as purificadora_bp
+    app.register_blueprint(purificadora_bp)
+    
     with app.app_context():
         db.create_all()
     

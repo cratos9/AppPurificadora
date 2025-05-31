@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Principal{% endblock %}
+
+{% block style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}"> {% endblock %}
+
+{% block content %}
+{% if session.nombre == 'Purificadora' and session.usuario_tipo == 'purificadora' %}
+<div class="card">
+    <nav>
+        <a href="{{ url_for('Purificadora.ver_rutas' ) }}">Regresar</a>
+    </nav>
+    <h1>Registrar nueva ruta</h1>
+    <form method="post">
+        <input id="nombre" name="nombre" type="text" required placeholder="Nombre"/>
+        <textarea id="descripcion" name="descripcion" required placeholder="Descripcion"></textarea>
+        <input id="zona" name="zona" type="text" required placeholder="Zona"/>
+        <button type="submit">Guardar</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
