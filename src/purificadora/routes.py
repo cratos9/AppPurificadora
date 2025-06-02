@@ -1,7 +1,7 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash, session, g
 from src.usuarios.routes import login_required
-from src.database.coneccion import Repartidor, Ruta, Rutina, Pago, Visita, Calificacion, Calificacion
-from src.purificadora.services import InicioSesionPurificadora, RegistrarRuta, EliminarRuta, RegistrarRepartidor, EliminarRepartidor, db
+from src.database.coneccion import Repartidor, Ruta, Rutina, Pago, Visita, Calificacion, Calificacion, db
+from src.purificadora.services import InicioSesionPurificadora, RegistrarRuta, EliminarRuta, RegistrarRepartidor, EliminarRepartidor, CompletarEntrega
 from datetime import datetime, timedelta
 from sqlalchemy import func
 
@@ -126,4 +126,23 @@ def entregas_completadas():
         porcentaje=porcentaje,
         visitas=visitas
     )
+
+@bp.route('/completar_entrega', methods=['GET', 'POST'])
+@login_required
+def completar_entrega():
+    if request.method == 'POST':
+        qr_codigo = request.form.get('qr_codigo')
+        monto = request.form.get('monto')
+        metodo = request.form.get('metodo')
+        referencia = request.form.get('referencia')
+        usuario_id = session.get('usuario_id')
+        if qr_codigo and monto and metodo and usuario_id:
+            if CompletarEntrega(qr_codigo, usuario_id, monto, metodo, referencia):
+                flash('Entrega y pago completados correctamente.', 'success')
+            else:
+                flash('No se encontró la visita con ese QR o hubo un error al completar la entrega.', 'error')
+        else:
+            flash('Debe completar todos los campos requeridos.', 'error')
+        return redirect(url_for('Purificadora.index'))
+    return render_template('purificadora/completar_entrega.html')
 

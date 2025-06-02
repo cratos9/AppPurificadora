@@ -28,6 +28,7 @@ class Repartidor(db.Model):
     nombre = db.Column(db.String(255), nullable=False)
     telefono = db.Column(db.String(50))
     capacidad_maxima = db.Column(db.Integer, nullable=False)
+    cantidad = db.Column(db.Integer, default=0)
     activo = db.Column(db.Boolean, default=True)
 
     rutinas = db.relationship('Rutina', backref='repartidor')
@@ -40,7 +41,7 @@ class Ruta(db.Model):
     nombre = db.Column(db.String(255), nullable=False)
     descripcion = db.Column(db.Text)
     zona = db.Column(db.String(255))
-    clientes = db.Column(db.Integer)
+    clientes = db.Column(db.Integer, default=0)
 
     rutinas = db.relationship('Rutina', backref='ruta')
 
@@ -86,18 +87,6 @@ class Calificacion(db.Model):
     fecha = db.Column(db.Date, default=datetime.utcnow)
     calificacion = db.Column(db.Integer, nullable=False)
     comentario = db.Column(db.Text)
-
-class AuditoriaSistema(db.Model):
-    __tablename__ = 'auditoria_sistema'
-
-    id = db.Column(db.Integer, primary_key=True)
-    entidad = db.Column(db.String(50), nullable=False)
-    entidad_id = db.Column(db.Integer, nullable=False)
-    campo = db.Column(db.String(255))
-    valor_anterior = db.Column(db.Text)
-    valor_nuevo = db.Column(db.Text)
-    operacion = db.Column(db.String(10), nullable=False)
-    fecha = db.Column(db.DateTime, default=datetime.utcnow)
 
 class AsignacionRepartidor(db.Model):
     __tablename__ = 'asignacion_repartidor'

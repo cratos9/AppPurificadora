@@ -3,7 +3,8 @@
 {% block title %}Principal{% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/rutinas/index.css') }}"> {% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rutinas/index.css') }}"> 
+{% endblock %}
 
 {% block content %}
 {% if rutinas|length == 0 %}
@@ -22,8 +23,9 @@
     <nav>
         <a href="{{ url_for('usuarios.cuenta', id = session.usuario_id)}}">Perfil</a>
         <span>{{ session.nombre }}</span>
-        <a href="{{ url_for('Rutinas.modificar_rutina', id = rutinas.id)}}">Modificar rutina</a>
-        <a href="{{ url_for('Rutinas.eliminar_rutina', id = rutina.id)}}">Eliminar rutina</a>
+        <a href="{{ url_for('Rutinas.ver_visita' ) }}">Ver visita</a>
+        <a href="{{ url_for('Rutinas.modificar_rutina', rutina_id = rutina.id)}}">Modificar rutina</a>
+        <a href="{{ url_for('Rutinas.eliminar_rutina', rutina_id = rutina.id)}}">Eliminar rutina</a>
     </nav>
     <hr>
     <table>

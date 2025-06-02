@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Completar entrega{% endblock %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <nav>
+        <a href="{{ url_for('Purificadora.index') }}">Regresar</a>
+    </nav>
+    <hr>
+    <h1>Completar Entrega y Registrar Pago</h1>
+    <form method="POST" action="{{ url_for('Purificadora.completar_entrega') }}">
+        <div>
+            <label for="qr_codigo">Código QR:</label>
+            <input type="text" id="qr_codigo" name="qr_codigo" required>
+        </div>
+        <h2>Información de Pago</h2>
+        <div>
+            <label for="monto">Monto:</label>
+            <input type="number" step="0.01" id="monto" name="monto" required>
+        </div>
+        <div>
+            <label for="metodo">Método de Pago:</label>
+            <input type="text" id="metodo" name="metodo" placeholder="Efectivo, Tarjeta, etc." required>
+        </div>
+        <div>
+            <label for="referencia">Referencia (opcional):</label>
+            <input type="text" id="referencia" name="referencia">
+        </div>
+        <button type="submit">Completar Entrega y Registrar Pago</button>
+    </form>
+</div>
+{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Principal{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rutinas/index.css') }}"> {% endblock %}
+
+{% block content %}
+{% if visita %}
+<h1>Próxima Visita</h1>
+<p><strong>Fecha:</strong> {{ visita.fecha }}</p>
+<p><strong>Código QR:</strong> {{ visita.qr_codigo }}</p>
+<p><strong>Estado:</strong> {{ 'Verificado' if visita.verificado else 'Pendiente' }}</p>
+{% else %}
+<p>No hay visitas programadas.</p>
+{% endif %}
+{% endblock %}

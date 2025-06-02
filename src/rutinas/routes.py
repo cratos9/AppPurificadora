@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash, session, g
-from src.rutinas.services import CrearRutina, ModificarRutina, EliminarRutina
+from src.rutinas.services import CrearRutina, ModificarRutina, EliminarRutina, get_visita_mas_proxima
 from src.database.coneccion import Rutina
 from src.usuarios.routes import login_required
 
@@ -53,3 +53,10 @@ def eliminar_rutina(rutina_id):
 def index():
     rutinas = Rutina.query.all()
     return render_template('rutinas/index.html', rutinas=rutinas)
+
+@bp.route('/ver_visita', methods=['GET', 'POST'])
+@login_required
+def ver_visita():
+    usuario_id = session.get('usuario_id')
+    visita_proxima = get_visita_mas_proxima(usuario_id)
+    return render_template('rutinas/ver_visita.html', visita=visita_proxima)

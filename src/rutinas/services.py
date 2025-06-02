@@ -1,43 +1,79 @@
+import random
 from flask import session 
 from src.database.coneccion import db, Rutina, Repartidor, Ruta, Visita, Usuario
+from datetime import datetime, timedelta, time
 
-def CrearRutina(usuario_id, dias, hora, cantidad, marca=None, repartidor_id=None, ruta_id=None):
+def CrearRutina(usuario_id, dias, hora, cantidad, marcas):
     try:
-        
+        cantidad = int(cantidad)  # Conversión a entero para evitar error en la suma
+        # Seleccionar repartidor disponible
         repartidores = db.session.query(Repartidor).all()
-        asignado = False
+        repartidor_seleccionado = None
         for r in repartidores:
             if r.cantidad + cantidad <= 20:
                 r.cantidad += cantidad
-                asignado = True
+                repartidor_seleccionado = r
                 break
-        if not asignado:
+        if not repartidor_seleccionado:
             return False
 
-        ruta_existe = db.session.query(Ruta).filter_by(calle=Usuario.calle).first()
+        # Buscar la ruta correspondiente según la zona del usuario
+        usuario = db.session.query(Usuario).filter_by(id=usuario_id).first()
+        if not usuario:
+            return False
+        ruta_existe = db.session.query(Ruta).filter_by(zona=usuario.colonia).first()
         if ruta_existe:
-            Ruta.clientes += 1
-            db.session.commit()
+            ruta_existe.clientes += 1
         else:
             return False
-        
-        usuario_id = session.get('usuario_id')
-        if not usuario_id:
-            return False
-        
-        nueva_rutina = Rutina(
+
+        # Crear la nueva rutina incluyendo repartidor_id y ruta_id
+        rutina = Rutina(
             usuario_id=usuario_id,
-            dias=dias,
-            hora=hora,
+            dias=",".join(dias),
+            hora=hora if isinstance(hora, time) else datetime.strptime(hora, '%H:%M').time(),
             cantidad=cantidad,
-            marca=marca,
-            repartidor_id=repartidor_id,
-            ruta_id=ruta_id
+            marca=",".join(marcas),
+            repartidor_id=repartidor_seleccionado.id,
+            ruta_id=ruta_existe.id
         )
-        db.session.add(nueva_rutina)
+        db.session.add(rutina)
+        db.session.commit()  # Necesario para obtener rutina.id
+
+        # Mapeo de días de la semana en español (en minúsculas)
+        weekday_mapping = {
+            'lunes': 0,
+            'martes': 1,
+            'miercoles': 2,
+            'jueves': 3,
+            'viernes': 4,
+            'sabado': 5,
+            'domingo': 6
+        }
+        today = datetime.today()
+        # Para cada día seleccionado, generar visitas pendientes para las próximas "cantidad" semanas
+        for dia in dias:
+            dia_lower = dia.lower()
+            if dia_lower in weekday_mapping:
+                target_weekday = weekday_mapping[dia_lower]
+                days_ahead = (target_weekday - today.weekday() + 7) % 7
+                if days_ahead == 0:
+                    days_ahead = 7
+                first_date = today + timedelta(days=days_ahead)
+                for i in range(cantidad):
+                    visit_date = first_date + timedelta(weeks=i)
+                    final_datetime = datetime.combine(visit_date.date(), rutina.hora)
+                    nueva_visita = Visita(
+                        rutina_id=rutina.id,
+                        fecha=final_datetime,
+                        qr_codigo=str(random.randint(100000, 999999)),
+                        verificado=False
+                    )
+                    db.session.add(nueva_visita)
         db.session.commit()
-        return True
-    except:
+        return rutina
+    except Exception as e:
+        print(f"Error al crear rutina: {e}")
         db.session.rollback()
         return False
     
@@ -93,3 +129,11 @@ def EliminarRutina(rutina_id):
     except:
         db.session.rollback()
         return False
+    
+def get_visita_mas_proxima(usuario_id):
+    now = datetime.now()
+    visita = Visita.query.join(Rutina).filter(
+        Visita.fecha >= now,
+        Rutina.usuario_id == usuario_id
+    ).order_by(Visita.fecha.asc()).first()
+    return visita

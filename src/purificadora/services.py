@@ -1,4 +1,5 @@
-from src.database.coneccion import Repartidor, Ruta, Rutina, Pago, Visita, Calificacion, Calificacion, db
+from src.database.coneccion import Repartidor, Ruta, Rutina, Pago, Visita, Calificacion, db
+from datetime import datetime
 
 def InicioSesionPurificadora(contrasena):
     try:
@@ -58,3 +59,27 @@ def EliminarRepartidor(repartidor_id):
         db.session.rollback()
         print(f"Error al eliminar repartidor: {e}")
         return False
+    
+def CompletarEntrega(qr_codigo, usuario_id, monto, metodo, referencia=""):
+    try:
+        visita = Visita.query.filter_by(qr_codigo=qr_codigo).first()
+        if not visita:
+            return False
+        # Marcar la visita como completada
+        visita.verificado = "completada"
+        # Crear el nuevo pago dentro de la misma lógica
+        nuevo_pago = Pago(
+            usuario_id=usuario_id,
+            metodo=metodo,
+            monto=monto,
+            referencia=referencia,
+            fecha=datetime.utcnow()
+        )
+        db.session.add(nuevo_pago)
+        db.session.commit()
+        return True
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error al completar entrega: {e}")
+        return False
+
