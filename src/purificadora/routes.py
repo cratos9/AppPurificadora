@@ -113,7 +113,7 @@ def ruta_entrega():
 def entregas_completadas():
     hace_un_mes = datetime.now() - timedelta(days=30)
     total_visitas = Visita.query.filter(Visita.fecha >= hace_un_mes).count()
-    completadas = Visita.query.filter(Visita.fecha >= hace_un_mes, Visita.verificado == 'completada').count()
+    completadas = Visita.query.filter(Visita.fecha >= hace_un_mes, Visita.verificado == True).count()
     porcentaje = (completadas / total_visitas * 100) if total_visitas else 0
 
     # Si deseas ver el detalle de cada visita, obtén la lista:
@@ -145,4 +145,18 @@ def completar_entrega():
             flash('Debe completar todos los campos requeridos.', 'error')
         return redirect(url_for('Purificadora.index'))
     return render_template('purificadora/completar_entrega.html')
+
+@bp.route('/ver_rutina/<int:rutina_id>', methods=['GET'])
+@login_required
+def ver_rutina(rutina_id):
+    rutina = Rutina.query.get(rutina_id)
+    if not rutina:
+        flash("Rutina no encontrada", "error")
+        return redirect(url_for('Purificadora.index'))
+    # Se utilizan las relaciones definidas en el modelo para obtener el usuario (cliente),
+    # el repartidor y la ruta.
+    return render_template(
+        'purificadora/ver_rutina.html',
+        rutina=rutina
+    )
 

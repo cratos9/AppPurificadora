@@ -40,18 +40,24 @@
                 </tr>
             </thead>
             <tbody>
-                {% set horas = ["9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30
-                PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM"] %}
+                {% set horas = ["9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM"] %}
                 {% set dias = ["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"] %}
                 {% for hora in horas %}
                 <tr>
                     <td>{{ hora }}</td>
                     {% for dia in dias %}
                     <td>
-                        {% for tarea in tareas %}
-                        {% if tarea.dia == dia and tarea.hora == hora %}
-                        {{ tarea.nombre }}<br>
-                        {% endif %}
+                        {% set found = false %}
+                        {% for rutina in rutinas %}
+                            {% set hora_str = rutina.hora.strftime('%I:%M %p') %}
+                            {% if hora_str.startswith('0') %}
+                                {% set hora_formateada = hora_str[1:] %}
+                            {% else %}
+                                {% set hora_formateada = hora_str %}
+                            {% endif %}
+                            {% if dia in rutina.dias and hora_formateada == hora %}
+                                <a href="{{ url_for('Purificadora.ver_rutina', rutina_id=rutina.id) }}" class="rutina">Detalles</a><br>                 
+                            {% endif %}
                         {% endfor %}
                     </td>
                     {% endfor %}

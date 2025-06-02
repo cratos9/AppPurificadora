@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de Rutina{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}"> {% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Detalle de Rutina ID: {{ rutina.id }}</h1>
+    <p><strong>Cliente:</strong> {{ rutina.usuario.nombre }}</p>
+    <p><strong>Teléfono Cliente:</strong> {{ rutina.usuario.telefono }}</p>
+    <p><strong>Colonia:</strong> {{ rutina.usuario.colonia }}</p>
+    <hr>
+    <p><strong>Repartidor:</strong> {{ rutina.repartidor.nombre if rutina.repartidor else "No asignado" }}</p>
+    <p><strong>Ruta:</strong> {{ rutina.ruta.nombre if rutina.ruta else "No asignada" }}</p>
+    <hr>
+    <p><strong>Días:</strong> {{ rutina.dias }}</p>
+    <p><strong>Hora:</strong> {{ rutina.hora.strftime('%I:%M %p') }}</p>
+    <p><strong>Cantidad:</strong> {{ rutina.cantidad }}</p>
+    <p><strong>Marca:</strong> {{ rutina.marca }}</p>
+    <br>
+    <a href="{{ url_for('Purificadora.index') }}">Regresar</a>
+</div>
+{% endblock %}

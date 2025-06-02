@@ -65,7 +65,8 @@ def CompletarEntrega(qr_codigo, usuario_id, monto, metodo, referencia=""):
         visita = Visita.query.filter_by(qr_codigo=qr_codigo).first()
         if not visita:
             return False
-        visita.verificado = "completada"
+        # Cambiado "completada" a True, ya que el campo espera un valor booleano
+        visita.verificado = True
         nuevo_pago = Pago(
             usuario_id=usuario_id,
             metodo=metodo,
