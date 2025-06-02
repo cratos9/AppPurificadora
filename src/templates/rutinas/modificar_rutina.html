@@ -2,56 +2,70 @@
 
 {% block title %}Modificar rutina{% endblock %}
 
-<!-- {% block style %} <link rel="stylesheet" href="style.css"> {% endblock %} -->
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rutinas/index.css') }}"> 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rutinas/forms.css' ) }}">
+{% endblock %}
 
 {% block content %}
-<h1>Modificar rutina</h1>
-<p>Su calle es: {{ session["calle"] }}</p>
-<form method="POST">
-    <label>
-        <input type="checkbox" name="dias" value="Lunes" {% if 'Lunes' in rutina.dias %}checked{% endif %}>
-        Lunes
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Martes" {% if 'Martes' in rutina.dias %}checked{% endif %}>
-        Martes
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Miercoles" {% if 'Miercoles' in rutina.dias %}checked{% endif %}>
-        Miércoles
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Jueves" {% if 'Jueves' in rutina.dias %}checked{% endif %}>
-        Jueves
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Viernes" {% if 'Viernes' in rutina.dias %}checked{% endif %}>
-        Viernes
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Sabado" {% if 'Sabado' in rutina.dias %}checked{% endif %}>
-        Sábado
-    </label>
-    <label for="hora">Hora:</label>
-    <input type="time" id="hora" name="hora" required value="{{ rutina.hora }}">
-    <label for="cantidad">Cantidad:</label>
-    <input type="number" id="cantidad" name="cantidad" required value="{{ rituna.cantidad }}">
-    <label>
-        <input type="checkbox" name="marcas" value="Bonafond" {% if 'Bonafond' in rituna.marca %}checked{% endif %}>
-        Bonafond
-    </label>
-    <label>
-        <input type="checkbox" name="marcas" value="Ciel" {% if 'Ciel' in rituna.marca %}checked{% endif %}>
-        Ciel
-    </label>
-    <label>
-        <input type="checkbox" name="marcas" value="Epura" {% if 'Epura' in rituna.marca %}checked{% endif %}>
-        Epura
-    </label>
-    <label>
-        <input type="checkbox" name="marcas" value="Electropura" {% if 'Electropura' in rituna.marca %}checked{% endif %}>
-        Electropura
-    </label>
-    <button type="submit">Modificar rutina</button>
-</form>
+<div class="card">
+    <nav>
+        <a href="{{ url_for('Rutinas.index') }}">Regresar</a>
+    </nav>
+    <h1>Modificar rutina</h1>
+    <p>Su calle es: {{ session["calle"] }}</p>
+    <form method="POST">
+        <div class="dias">
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Lunes" {% if 'Lunes' in rutina.dias %}checked{% endif %}>
+                <span>Lunes</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Martes" {% if 'Martes' in rutina.dias %}checked{% endif %}>
+                <span>Martes</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Miercoles" {% if 'Miercoles' in rutina.dias %}checked{% endif %}>
+                <span>Miércoles</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Jueves" {% if 'Jueves' in rutina.dias %}checked{% endif %}>
+                <span>Jueves</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Viernes" {% if 'Viernes' in rutina.dias %}checked{% endif %}>
+                <span>Viernes</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Sabado" {% if 'Sabado' in rutina.dias %}checked{% endif %}>
+                <span>Sábado</span>
+            </label>
+        </div>
+        <div class="cantidades">
+            <label for="hora">Hora:</label>
+            <input type="time" id="hora" name="hora" step="1800" min="09:00" max="17:00" required value="{{ rutina.hora }}">
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" required value="{{ rutina.cantidad }}">
+        </div>
+        <div class="marcas">
+            <label class="custom-checkbox">
+                <input type="checkbox" name="marcas" value="Bonafond" {% if 'Bonafond' in rutina.marca %}checked{% endif %}>
+                <span>Bonafond</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="marcas" value="Ciel" {% if 'Ciel' in rutina.marca %}checked{% endif %}>
+                <span>Ciel</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="marcas" value="Epura" {% if 'Epura' in rutina.marca %}checked{% endif %}>
+                <span>Epura</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="marcas" value="Electropura" {% if 'Electropura' in rutina.marca %}checked{% endif %}>
+                <span>Electropura</span>
+            </label>
+        </div>
+        <button type="submit">Modificar rutina</button>
+    </form>
+</div>
 {% endblock %}

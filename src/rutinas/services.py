@@ -5,8 +5,7 @@ from datetime import datetime, timedelta, time
 
 def CrearRutina(usuario_id, dias, hora, cantidad, marcas):
     try:
-        cantidad = int(cantidad)  # Conversión a entero para evitar error en la suma
-        # Seleccionar repartidor disponible
+        cantidad = int(cantidad)  
         repartidores = db.session.query(Repartidor).all()
         repartidor_seleccionado = None
         for r in repartidores:
@@ -17,7 +16,6 @@ def CrearRutina(usuario_id, dias, hora, cantidad, marcas):
         if not repartidor_seleccionado:
             return False
 
-        # Buscar la ruta correspondiente según la zona del usuario
         usuario = db.session.query(Usuario).filter_by(id=usuario_id).first()
         if not usuario:
             return False
@@ -27,7 +25,6 @@ def CrearRutina(usuario_id, dias, hora, cantidad, marcas):
         else:
             return False
 
-        # Crear la nueva rutina incluyendo repartidor_id y ruta_id
         rutina = Rutina(
             usuario_id=usuario_id,
             dias=",".join(dias),
@@ -38,9 +35,8 @@ def CrearRutina(usuario_id, dias, hora, cantidad, marcas):
             ruta_id=ruta_existe.id
         )
         db.session.add(rutina)
-        db.session.commit()  # Necesario para obtener rutina.id
-
-        # Mapeo de días de la semana en español (en minúsculas)
+        db.session.commit()  
+        
         weekday_mapping = {
             'lunes': 0,
             'martes': 1,
@@ -51,7 +47,6 @@ def CrearRutina(usuario_id, dias, hora, cantidad, marcas):
             'domingo': 6
         }
         today = datetime.today()
-        # Para cada día seleccionado, generar visitas pendientes para las próximas "cantidad" semanas
         for dia in dias:
             dia_lower = dia.lower()
             if dia_lower in weekday_mapping:
@@ -77,44 +72,80 @@ def CrearRutina(usuario_id, dias, hora, cantidad, marcas):
         db.session.rollback()
         return False
     
-def ModificarRutina(rutina_id, dias=None, hora=None, cantidad=None, marca=None, repartidor_id=None, ruta_id=None):
+def ModificarRutina(rutina_id, dias=None, hora=None, cantidad=None, marcas=None, repartidor_id=None, ruta_id=None):
     try:
         rutina = db.session.query(Rutina).filter_by(id=rutina_id).first()
         if not rutina:
             return False
-        
-        if cantidad is not None and cantidad > rutina.cantidad:
-            repartidores_disponibles = db.session.query(Repartidor).all()
-            antiguo_repartidor = db.session.query(Repartidor).filter_by(id=rutina.repartidor_id).first()
-            if antiguo_repartidor:
-                antiguo_repartidor.cantidad -= rutina.cantidad
-            asignado = False
-            for rep in repartidores_disponibles:
-                if rep.cantidad + cantidad <= 20:
-                    rep.cantidad += cantidad
-                    Repartidor.cantidad += cantidad
-                    db.session.commit()
-                    rutina.cantidad = cantidad
-                    asignado = True
-                    break
-            if not asignado:
-                return False
-            
-        if dias is not None:
-            rutina.dias = dias
-        if hora is not None:
-            rutina.hora = hora
+
+        # Actualizar cantidad y ajustar repartidor si fuera necesario
         if cantidad is not None:
-            rutina.cantidad = cantidad
-        if marca is not None:
-            rutina.marca = marca
+            cantidad = int(cantidad)
+            if cantidad != rutina.cantidad:
+                repartidor = db.session.query(Repartidor).filter_by(id=rutina.repartidor_id).first()
+                if repartidor:
+                    repartidor.cantidad -= rutina.cantidad
+                    repartidor.cantidad += cantidad
+                rutina.cantidad = cantidad
+
+        # Actualizar los campos de días y marcas convirtiendo las listas a cadenas
+        if dias is not None:
+            rutina.dias = ",".join(dias)
+        if hora is not None:
+            try:
+                parsed_time = datetime.strptime(hora, '%H:%M:%S').time()
+            except ValueError:
+                parsed_time = datetime.strptime(hora, '%H:%M').time()
+            rutina.hora = parsed_time
+        if marcas is not None:
+            rutina.marca = ",".join(marcas)
         if repartidor_id is not None:
             rutina.repartidor_id = repartidor_id
-        
+
+        # Eliminar visitas existentes asociadas a la rutina
+        visitas = db.session.query(Visita).filter_by(rutina_id=rutina_id).all()
+        for visita in visitas:
+            db.session.delete(visita)
+
+        # Generar nuevas visitas basadas en los nuevos datos
+        weekday_mapping = {
+            'lunes': 0,
+            'martes': 1,
+            'miercoles': 2,
+            'jueves': 3,
+            'viernes': 4,
+            'sabado': 5,
+            'domingo': 6
+        }
+        today = datetime.today()
+        # Usar la cantidad actualizada de la rutina
+        nueva_cantidad = rutina.cantidad  
+        # Se toma la lista de días desde el parámetro o se reconstruye a partir de la cadena almacenada
+        nuevos_dias = dias if dias is not None else rutina.dias.split(",")
+        for dia in nuevos_dias:
+            dia_lower = dia.lower()
+            if dia_lower in weekday_mapping:
+                target_weekday = weekday_mapping[dia_lower]
+                days_ahead = (target_weekday - today.weekday() + 7) % 7
+                if days_ahead == 0:
+                    days_ahead = 7
+                first_date = today + timedelta(days=days_ahead)
+                for i in range(nueva_cantidad):
+                    visit_date = first_date + timedelta(weeks=i)
+                    final_datetime = datetime.combine(visit_date.date(), rutina.hora)
+                    nueva_visita = Visita(
+                        rutina_id=rutina.id,
+                        fecha=final_datetime,
+                        qr_codigo=str(random.randint(100000, 999999)),
+                        verificado=False
+                    )
+                    db.session.add(nueva_visita)
+                    
         db.session.commit()
         return True
-    except:
+    except Exception as e:
         db.session.rollback()
+        print(f"Error al modificar rutina: {e}")
         return False
     
 def EliminarRutina(rutina_id):
@@ -123,17 +154,23 @@ def EliminarRutina(rutina_id):
         if not rutina:
             return False
         
+        visitas = db.session.query(Visita).filter_by(rutina_id=rutina_id).all()
+        for visita in visitas:
+            db.session.delete(visita)
+        
         db.session.delete(rutina)
         db.session.commit()
+        print("Cambios guardados en la base de datos.")
         return True
-    except:
+    except Exception as e:
+        print(f"Error al eliminar la rutina: {e}")
         db.session.rollback()
         return False
     
 def get_visita_mas_proxima(usuario_id):
     now = datetime.now()
-    visita = Visita.query.join(Rutina).filter(
+    visitas = Visita.query.join(Rutina).filter(
         Visita.fecha >= now,
         Rutina.usuario_id == usuario_id
-    ).order_by(Visita.fecha.asc()).first()
-    return visita
+    ).order_by(Visita.fecha.asc()).all()
+    return visitas

@@ -1,0 +1,71 @@
+body {
+    background-image: url("../../fondos/fondo_rutinas.jpg");
+    background-size: cover;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.profile-container {
+    background: rgba(17, 25, 40, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    width: 90%;
+    max-width: 600px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.profile-container h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.profile-container p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    line-height: 1.4;
+}
+
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.profile-actions form button {
+    background-color: #387782;
+    border: none;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.profile-actions form button:hover {
+    background-color: #58a9d4;
+}
+
+a {
+    color: #fff;
+    font-size: large;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    margin: 20px 0; 
+    text-transform: capitalize;
+    border: 1px solid #387782;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+a:hover {
+    color: #58a9d4;
+}

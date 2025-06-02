@@ -13,7 +13,7 @@ def crear_rutina():
         dias = request.form.getlist('dias')
         hora = request.form.get('hora')
         cantidad = request.form.get('cantidad')
-        marcas = request.form.getlist('marca')
+        marcas = request.form.getlist('marcas')
         rutina = CrearRutina(usuario_id, dias, hora, cantidad, marcas)
         if rutina:
             return redirect(url_for('Rutinas.index'))
@@ -25,20 +25,24 @@ def crear_rutina():
 @bp.route('/modificar/<int:rutina_id>', methods=['GET', 'POST'])
 @login_required
 def modificar_rutina(rutina_id):
+    rutina = Rutina.query.get(rutina_id)  # Se obtiene la rutina al inicio
     if request.method == 'POST':
+        print(f"Modificando rutina con ID: {rutina_id}")
         dias = request.form.getlist('dias')
         hora = request.form.get('hora')
         cantidad = request.form.get('cantidad')
-        marcas = request.form.getlist('marca')
-        rutina = Rutina.query.get(rutina_id)
+        marcas = request.form.getlist('marcas')
+        print(f"Días: {dias}, Hora: {hora}, Cantidad: {cantidad}, Marcas: {marcas}")
         if ModificarRutina(rutina_id, dias, hora, cantidad, marcas):
+            flash('Rutina modificada con éxito.', 'success')
+            
             return redirect(url_for('Rutinas.index'))
         else:
             flash('Error al modificar la rutina. Por favor, inténtalo de nuevo.', 'error')
     
-    return render_template('rutinas/modificar_rutina.html', rutina = rutina)
+    return render_template('rutinas/modificar_rutina.html', rutina=rutina)
 
-@bp.route('/eliminar/<int:rutina_id>', methods=['POST'])
+@bp.route('/eliminar/<int:rutina_id>', methods=['POST', 'GET'])
 @login_required
 def eliminar_rutina(rutina_id):
     if EliminarRutina(rutina_id):
@@ -58,5 +62,5 @@ def index():
 @login_required
 def ver_visita():
     usuario_id = session.get('usuario_id')
-    visita_proxima = get_visita_mas_proxima(usuario_id)
-    return render_template('rutinas/ver_visita.html', visita=visita_proxima)
+    visitas = get_visita_mas_proxima(usuario_id)
+    return render_template('rutinas/ver_visita.html', visitas=visitas)

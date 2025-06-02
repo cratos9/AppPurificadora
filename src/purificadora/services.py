@@ -65,9 +65,7 @@ def CompletarEntrega(qr_codigo, usuario_id, monto, metodo, referencia=""):
         visita = Visita.query.filter_by(qr_codigo=qr_codigo).first()
         if not visita:
             return False
-        # Marcar la visita como completada
         visita.verificado = "completada"
-        # Crear el nuevo pago dentro de la misma lógica
         nuevo_pago = Pago(
             usuario_id=usuario_id,
             metodo=metodo,

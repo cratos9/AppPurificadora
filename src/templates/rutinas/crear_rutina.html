@@ -4,56 +4,68 @@
 
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/rutinas/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rutinas/forms.css' ) }}">
 {% endblock %}
 
 {% block content %}
-<h1>Crear rutina</h1>
-<p>Su calle es: {{ session["calle"] }}</p>
-<form method="POST">
-    <label>
-        <input type="checkbox" name="dias" value="Lunes">
-        Lunes
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Martes">
-        Martes
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Miercoles">
-        Miércoles
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Jueves">
-        Jueves
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Viernes">
-        Viernes
-    </label>
-    <label>
-        <input type="checkbox" name="dias" value="Sabado">
-        Sábado
-    </label>
-    <label for="hora">Hora:</label>
-    <input type="time" id="hora" name="hora" required>
-    <label for="cantidad">Cantidad:</label>
-    <input type="number" id="cantidad" name="cantidad" required>
-    <label>
-        <input type="checkbox" name="marcas" value="Bonafond">
-        Bonafond
-    </label>
-    <label>
-        <input type="checkbox" name="marcas" value="Ciel">
-        Ciel
-    </label>
-    <label>
-        <input type="checkbox" name="marcas" value="Epura">
-        Epura
-    </label>
-    <label>
-        <input type="checkbox" name="marcas" value="Electropura">
-        Electropura
-    </label>
-    <button type="submit">Crear rutina</button>
-</form>
+<div class="card">
+    <nav>
+        <a href="{{ url_for('Rutinas.index') }}">Regresar</a>
+    </nav>
+    <h1>Crear rutina</h1>
+    <p>Su calle es: {{ session["calle"] }}</p>
+    <form method="POST">
+        <div class="dias">
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Lunes">
+                <span>Lunes</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Martes">
+                <span>Martes</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Miercoles">
+                <span>Miércoles</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Jueves">
+                <span>Jueves</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Viernes">
+                <span>Viernes</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="dias" value="Sabado">
+                <span>Sábado</span>
+            </label>
+        </div>
+        <div class="cantidades">
+            <label for="hora">Hora:</label>
+            <input type="time" id="hora" name="hora" step="1800" min="09:00" max="17:00" required>
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" required>
+        </div>
+        <div class="marcas">
+            <label class="custom-checkbox">
+                <input type="checkbox" name="marcas" value="Bonafond">
+                <span>Bonafond</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="marcas" value="Ciel">
+                <span>Ciel</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="marcas" value="Epura">
+                <span>Epura</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="marcas" value="Electropura">
+                <span>Electropura</span>
+            </label>
+        </div>
+        <button type="submit">Crear rutina</button>
+    </form>
+</div>
 {% endblock %}

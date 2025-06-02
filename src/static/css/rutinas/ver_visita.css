@@ -1,0 +1,59 @@
+body {
+    background-image: url("../../fondos/fondo_rutinas.jpg");
+    background-size: cover;
+}
+
+.card-container {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.85);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    width: 80%;
+    margin: 100px auto;
+    padding: 2rem;
+    color: #fff;
+}
+
+/* Se reemplaza la definición de nav a.regresar para que sea igual que la de index.css */
+nav a.regresar {
+    color: #fff;
+    font-size: large;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    margin: 0 1rem 0 0;
+    text-transform: capitalize;
+    border: 1px solid #387782;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+nav a.regresar:hover {
+    color: #58a9d4;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.visit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.visit-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.visit-card:hover {
+    transform: scale(1.05);
+}
+
+.visit-card p {
+    margin: 0.5rem 0;
+}

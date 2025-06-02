@@ -1,17 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}Principal{% endblock %}
+{% block title %}Próximas Visitas{% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/rutinas/index.css') }}"> {% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rutinas/ver_visita.css') }}">
+{% endblock %}
 
 {% block content %}
-{% if visita %}
-<h1>Próxima Visita</h1>
-<p><strong>Fecha:</strong> {{ visita.fecha }}</p>
-<p><strong>Código QR:</strong> {{ visita.qr_codigo }}</p>
-<p><strong>Estado:</strong> {{ 'Verificado' if visita.verificado else 'Pendiente' }}</p>
-{% else %}
-<p>No hay visitas programadas.</p>
-{% endif %}
+<div class="card-container">
+    <nav>
+        <a href="{{ url_for('Rutinas.index') }}" class="regresar">Regresar</a>
+    </nav>
+    <h1>Próximas Visitas</h1>
+    <div class="visit-grid">
+        {% if visitas|length > 0 %}
+            {% for visita in visitas %}
+            <div class="visit-card">
+                <p><strong>Fecha:</strong> {{ visita.fecha }}</p>
+                <p><strong>Código QR:</strong> {{ visita.qr_codigo }}</p>
+                <p><strong>Estado:</strong> {{ 'Verificado' if visita.verificado else 'Pendiente' }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No hay visitas programadas.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

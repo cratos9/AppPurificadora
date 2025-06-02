@@ -7,62 +7,47 @@
 {% endblock %}
 
 {% block content %}
-{% if rutinas|length == 0 %}
 <div class="card">
     <nav>
-        <a href="{{ url_for('usuarios.cuenta', id = session.usuario_id) }}" id="username">{{ session.nombre }}</a>
-        <a href="{{ url_for('Rutinas.crear_rutina' ) }}">Crear rutina</a>
+        <a href="{{ url_for('usuarios.cuenta', id=session.usuario_id) }}" id="username">{{ session.nombre }}</a>
+        <a href="{{ url_for('Rutinas.ver_visita') }}">Ver visita</a>
+        <a href="{{ url_for('Rutinas.crear_rutina') }}">Crear rutina</a>
     </nav>
     <hr>
-    <h2>No tienes registrada ninguna rutina</h2>
+    {% if rutinas|length == 0 %}
+        <h2>No tienes registrada ninguna rutina</h2>
+    {% else %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                    <th>Sábado</th>
+                    <th>Domingo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rutina in rutinas if rutina.usuario_id == session.usuario_id %}
+                <tr>
+                    <td>{% if 'Lunes' in rutina.dias %}{{ rutina.hora.strftime('%H:%M') }}{% endif %}</td>
+                    <td>{% if 'Martes' in rutina.dias %}{{ rutina.hora.strftime('%H:%M') }}{% endif %}</td>
+                    <td>{% if 'Miercoles' in rutina.dias %}{{ rutina.hora.strftime('%H:%M') }}{% endif %}</td>
+                    <td>{% if 'Jueves' in rutina.dias %}{{ rutina.hora.strftime('%H:%M') }}{% endif %}</td>
+                    <td>{% if 'Viernes' in rutina.dias %}{{ rutina.hora.strftime('%H:%M') }}{% endif %}</td>
+                    <td>{% if 'Sabado' in rutina.dias %}{{ rutina.hora.strftime('%H:%M') }}{% endif %}</td>
+                    <td>{% if 'Domingo' in rutina.dias %}{{ rutina.hora.strftime('%H:%M') }}{% endif %}</td>
+                    <td>
+                        <a href="{{ url_for('Rutinas.modificar_rutina', rutina_id=rutina.id) }}">Modificar</a>
+                        <a href="{{ url_for('Rutinas.eliminar_rutina', rutina_id=rutina.id) }}">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 </div>
-{% endif %}
-{% for rutina in rutinas %}
-{% if rutina.usuario_id == session.usuario_id %}
-<div class="card">
-    <nav>
-        <a href="{{ url_for('usuarios.cuenta', id = session.usuario_id)}}">Perfil</a>
-        <span>{{ session.nombre }}</span>
-        <a href="{{ url_for('Rutinas.ver_visita' ) }}">Ver visita</a>
-        <a href="{{ url_for('Rutinas.modificar_rutina', rutina_id = rutina.id)}}">Modificar rutina</a>
-        <a href="{{ url_for('Rutinas.eliminar_rutina', rutina_id = rutina.id)}}">Eliminar rutina</a>
-    </nav>
-    <hr>
-    <table>
-        <thead>
-            <tr>
-                <th>Lunes</th>
-                <th>Martes</th>
-                <th>Miércoles</th>
-                <th>Jueves</th>
-                <th>Viernes</th>
-                <th>Sábado</th>
-                <th>Domingo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{% if 'Lunes' in rutina.dias %}hola{% endif %}</td>
-                <td>{% if 'Martes' in rutina.dias %}hola{% endif %}</td>
-                <td>{% if 'Miércoles' in rutina.dias %}hola{% endif %}</td>
-                <td>{% if 'Jueves' in rutina.dias %}hola{% endif %}</td>
-                <td>{% if 'Viernes' in rutina.dias %}hola{% endif %}</td>
-                <td>{% if 'Sábado' in rutina.dias %}hola{% endif %}</td>
-                <td>{% if 'Domingo' in rutina.dias %}hola{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-{% else %}
-<div class="card">
-    <nav>
-        <a href="{{ url_for('usuarios.cuenta', id = session.usuario_id) }}">Perfil</a>
-        <span>{{ session.nombre }}</span>
-        <a href="{{ url_for('Rutinas.crear_rutina' ) }}">Crear rutina</a>
-    </nav>
-    <hr>
-    <h2>No tienes registrada ninguna rutina</h2>
-</div>
-{% endif %}
-{% endfor %}
 {% endblock %}
