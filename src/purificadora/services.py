@@ -81,4 +81,12 @@ def CompletarEntrega(qr_codigo, usuario_id, monto, metodo, referencia=""):
         db.session.rollback()
         print(f"Error al completar entrega: {e}")
         return False
+    
+def obtener_calificaciones():
+    calificaciones = Calificacion.query.all()
+    if calificaciones:
+        promedio = sum(c.calificacion for c in calificaciones) / len(calificaciones)
+    else:
+        promedio = 0
+    return calificaciones, promedio
 

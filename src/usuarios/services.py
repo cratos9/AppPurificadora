@@ -1,5 +1,6 @@
-from src.database.coneccion import db, Usuario
+from src.database.coneccion import db, Usuario, Calificacion
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 
 def CrearUsuario(nombre, telefono, contrasena, calle=None, numero_interior=None, numero_exterior=None, colonia=None):
@@ -67,4 +68,27 @@ def EliminarCuenta(telefono, contrasena):
         return False
     except:
         db.session.rollback()
+        return False
+
+def crear_calificacion(usuario_id, calificacion, comentario):
+    try:
+        calificacion_num = int(calificacion)
+        if calificacion_num < 1 or calificacion_num > 10:
+            return False
+    except Exception as e:
+        return False
+
+    nueva_calificacion = Calificacion(
+        usuario_id=usuario_id,
+        calificacion=calificacion_num,
+        comentario=comentario,
+        fecha=datetime.utcnow()
+    )
+    try:
+        db.session.add(nueva_calificacion)
+        db.session.commit()
+        return True
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error al crear calificación: {e}")
         return False

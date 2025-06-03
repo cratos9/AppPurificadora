@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Ver Calificaciones{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/purificadora/index.css') }}"> {% endblock %}
+
+{% block content %}
+<div class="card">
+    <a href="{{ url_for('Purificadora.index') }}">Regresar</a>
+    <h1>Lista de Calificaciones</h1>
+    <p><strong>Promedio General:</strong> {{ promedio|round(2) }}</p>
+    <ul>
+        {% for cal in calificaciones %}
+        <li>
+            <strong>{{ cal.usuario.nombre }}</strong>: {{ cal.comentario }} ({{ cal.calificacion }}/10)
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

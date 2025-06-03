@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash, session
-from src.usuarios.services import CrearUsuario, IniciarSesion, ModificarCuenta, EliminarCuenta
+from src.usuarios.services import CrearUsuario, IniciarSesion, ModificarCuenta, EliminarCuenta, crear_calificacion as crear_calificacion_service
 from src.database.coneccion import Usuario
 import functools
 
@@ -90,3 +90,20 @@ def cerrar_sesion():
 def cuenta(id):
     user = Usuario.query.get_or_404(id)
     return render_template("usuarios/cuenta.html", usuario=user)
+
+@bp.route('/crear_calificacion', methods=['GET', 'POST'])
+def crear_calificacion():
+    if request.method == 'POST':
+        cal = request.form.get('calificacion')
+        comentario = request.form.get('comentario')
+        usuario_id = session.get('usuario_id')
+        if cal and comentario and usuario_id:
+            if crear_calificacion_service(usuario_id, cal, comentario):
+                flash("Calificación enviada correctamente.", "success")
+                return redirect(url_for('usuarios.cuenta', id=usuario_id))
+            else:
+                flash("Error al enviar la calificación. Asegúrate que la calificación esté entre 1 y 10.", "error")
+        else:
+            flash("Debe completar todos los campos.", "error")
+    return render_template("usuarios/crear_calificacion.html")
+

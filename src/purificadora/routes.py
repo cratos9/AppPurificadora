@@ -1,7 +1,7 @@
-from flask import Blueprint, request, redirect, url_for, render_template, flash, session, g
+from flask import Blueprint, request, redirect, url_for, render_template, flash, session
 from src.usuarios.routes import login_required
 from src.database.coneccion import Repartidor, Ruta, Rutina, Pago, Visita, Calificacion, Calificacion, db
-from src.purificadora.services import InicioSesionPurificadora, RegistrarRuta, EliminarRuta, RegistrarRepartidor, EliminarRepartidor, CompletarEntrega
+from src.purificadora.services import InicioSesionPurificadora, RegistrarRuta, EliminarRuta, RegistrarRepartidor, EliminarRepartidor, CompletarEntrega, obtener_calificaciones
 from datetime import datetime, timedelta
 from sqlalchemy import func
 
@@ -159,4 +159,9 @@ def ver_rutina(rutina_id):
         'purificadora/ver_rutina.html',
         rutina=rutina
     )
+
+@bp.route('/ver_calificaciones', methods=['GET'])
+def ver_calificaciones():
+    calificaciones, promedio = obtener_calificaciones()
+    return render_template("purificadora/ver_calificaciones.html", calificaciones=calificaciones, promedio=promedio)
 

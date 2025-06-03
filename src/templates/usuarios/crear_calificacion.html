@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Calificación{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/rutinas/index.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/rutinas/forms.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="card">
+	<a href="{{ url_for('Rutinas.index') }}">Regresar</a>
+	<h1>Crear Calificación</h1>
+	<form method="POST">
+		<input type="number" name="calificacion" min="1" max="10" required placeholder="Calificación (1-10)">
+		<br>
+		<textarea name="comentario" required placeholder="Comentario"></textarea>
+		<br>
+		<button type="submit">Enviar Calificación</button>
+	</form>
+</div>
+{% endblock %}
