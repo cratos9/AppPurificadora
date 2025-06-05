@@ -46,7 +46,7 @@ def inicio_sesion():
             session['colonia'] = usuario.colonia
             return redirect(url_for('Rutinas.index'))
         else:
-            flash("Error al iniciar sesión")
+            flash("Error al iniciar sesión", "error")
     return render_template("usuarios/inicio_sesion.html")
 
 @bp.route("/ModificarCuenta/<int:id>", methods=['POST', 'GET'])
@@ -74,10 +74,12 @@ def eliminar_cuenta(id):
     if request.method == 'POST':
         telefono = request.form.get('telefono')
         contrasena = request.form.get('contrasena')
-        if telefono != session.get('telefono') and contrasena:
+        if telefono == session.get('telefono') and contrasena:
             EliminarCuenta(telefono, contrasena)
             session.clear()
             return redirect(url_for('usuarios.registrar'))
+        else:
+            flash("El teléfono proporcionado no coincide con el registrado en la sesión.", "error")
     return render_template("usuarios/eliminar_cuenta.html")
 
 @bp.route('/CerrarSesion')

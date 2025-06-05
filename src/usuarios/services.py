@@ -20,7 +20,7 @@ def CrearUsuario(nombre, telefono, contrasena, calle=None, numero_interior=None,
         db.session.add(nuevo_usuario)
         db.session.commit()
         return True
-    except:
+    except Exception:
         db.session.rollback()
         return False
     
@@ -30,7 +30,7 @@ def IniciarSesion(telefono, contrasena):
         if usuario and check_password_hash(usuario.contrasena, contrasena):
             return usuario
         return None
-    except:
+    except Exception:
         db.session.rollback()
         return None
     
@@ -74,8 +74,9 @@ def crear_calificacion(usuario_id, calificacion, comentario):
     try:
         calificacion_num = int(calificacion)
         if calificacion_num < 1 or calificacion_num > 10:
-            return False
+            return False  # El controlador puede usar un flash con "La calificación debe ser entre 1 y 10."
     except Exception as e:
+        print(f"Error de conversión en calificación: {e}")
         return False
 
     nueva_calificacion = Calificacion(

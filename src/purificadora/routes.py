@@ -18,7 +18,7 @@ def inicio_sesion_purificadora():
             session['usuario_tipo'] = 'purificadora'
             return redirect(url_for('Purificadora.index'))
         else:
-            flash('contraseña incorrecta.', 'error')
+            flash('Contraseña incorrecta. Intenta nuevamente.', 'error')
     return render_template('purificadora/inicio_sesion.html')
 
 @bp.route('/index', methods=['GET', 'POST'])

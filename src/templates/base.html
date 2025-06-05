@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block style %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mensajes.css') }}">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    {% with mensajes = get_flashed_messages() %}
+    {% with mensajes = get_flashed_messages(with_categories=True) %}
         {% if mensajes %}
         <div class="flash-messages">
             <ul>
-                {% for msg in mensajes %}
-                    <li>{{ msg }}</li>
+                {% for category, msg in mensajes %}
+                    <li class="{{ category }}">{{ msg }}</li>
                 {% endfor %}
             </ul>
         </div>
