@@ -20,41 +20,8 @@ button:hover {
     margin: 2rem 0;
 }
 
-.cantidades {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
-.cantidades label {
-    color: #fff;
-    font-size: 16px;
-    margin-right: 0.5rem;
-}
-
-.cantidades input[type="time"],
-.cantidades input[type="number"] {
-    padding: 0.5rem;
-    border: 1px solid #fff;
-    border-radius: 4px;
-    background: transparent;
-    color: #fff;
-    font-size: 16px;
+.cantidad{
     width: 150px;
-    transition: border-color 0.3s;
-}
-
-.cantidades input[type="time"]::placeholder,
-.cantidades input[type="number"]::placeholder {
-    color: #ccc;
-}
-
-.cantidades input[type="time"]:focus,
-.cantidades input[type="number"]:focus {
-    outline: none;
-    border-color: #aaa;
 }
 
 .custom-checkbox {

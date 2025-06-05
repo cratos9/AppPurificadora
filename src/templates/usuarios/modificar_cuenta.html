@@ -6,6 +6,7 @@
 
 {% block content %}
 <div class="card">
+    <a href="{{ url_for('Rutinas.index') }}">Regresar</a>
     <h1>Modificar Usuario</h1>
     <form method="POST">
         <input type="text" id="nombre" name="nombre" required placeholder="Nombre completo" value="{{ session.nombre }}">

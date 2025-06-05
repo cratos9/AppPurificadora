@@ -17,7 +17,7 @@ def CrearRutina(usuario_id, dias, hora, cantidad, marcas):
         if not usuario:
             return {"error": "Usuario no encontrado"}
             
-        ruta = db.session.query(Ruta).filter_by(zona=usuario.colonia).first()
+        ruta = db.session.query(Ruta).filter_by(zona=usuario.calle).first()
         if not ruta:
             return {"error": "No se encontró ruta para la colonia del usuario"}
         

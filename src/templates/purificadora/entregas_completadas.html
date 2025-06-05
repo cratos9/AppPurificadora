@@ -43,8 +43,18 @@
                 {% for visita in visitas %}
                 <tr>
                     <td>{{ visita.fecha }}</td>
-                    <td>{{ visita.verificado }}</td>
-                    <td>{{ visita.observaciones }}</td>
+                    <td>
+                        {% if visita.verificado %}
+                            entregado
+                        {% else %}
+                            pendiente
+                        {% endif %}
+                    </td>
+                    <td>
+                        Cantidad: {{ visita.rutina.cantidad }},
+                        Total: ${{ (visita.rutina.cantidad * 28)|round(2) }},
+                        Usuario: {{ visita.rutina.usuario.nombre }}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
