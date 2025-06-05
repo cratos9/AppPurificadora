@@ -15,7 +15,6 @@ def crear_rutina():
         cantidad = request.form.get('cantidad')
         marcas = request.form.getlist('marcas')
         rutina = CrearRutina(usuario_id, dias, hora, cantidad, marcas)
-        # Si la función retorna un dict con "error", se muestra ese mensaje
         if rutina and not isinstance(rutina, dict):
             flash('Rutina creada con éxito.', 'success')
             return redirect(url_for('Rutinas.index'))

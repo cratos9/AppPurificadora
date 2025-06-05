@@ -3,7 +3,6 @@ import uuid
 from src.database.coneccion import db, Usuario, Rutina, Repartidor, Ruta, Visita, AsignacionRepartidor
 
 def generate_unique_qr():
-    """Genera un código QR corto de 6 caracteres, asegurándose de que no exista ya en la base de datos."""
     while True:
         code = uuid.uuid4().hex[:6].upper()
         if not db.session.query(Visita).filter_by(qr_codigo=code).first():

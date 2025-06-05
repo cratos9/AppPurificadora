@@ -74,7 +74,7 @@ def crear_calificacion(usuario_id, calificacion, comentario):
     try:
         calificacion_num = int(calificacion)
         if calificacion_num < 1 or calificacion_num > 10:
-            return False  # El controlador puede usar un flash con "La calificación debe ser entre 1 y 10."
+            return False
     except Exception as e:
         print(f"Error de conversión en calificación: {e}")
         return False

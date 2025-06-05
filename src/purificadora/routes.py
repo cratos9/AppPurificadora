@@ -102,7 +102,7 @@ def ver_pagos():
 def ruta_entrega():
     rutas = (
         db.session.query(Ruta.nombre, func.count(Rutina.id))
-        .outerjoin(Rutina, Rutina.ruta_id == Ruta.id)  # Cambiar a left outer join
+        .outerjoin(Rutina, Rutina.ruta_id == Ruta.id)
         .group_by(Ruta.nombre)
         .all()
     )
@@ -116,7 +116,6 @@ def entregas_completadas():
     completadas = Visita.query.filter(Visita.fecha >= hace_un_mes, Visita.verificado == True).count()
     porcentaje = (completadas / total_visitas * 100) if total_visitas else 0
 
-    # Si deseas ver el detalle de cada visita, obtén la lista:
     visitas = Visita.query.filter(Visita.fecha >= hace_un_mes).all()
 
     return render_template(
@@ -153,8 +152,6 @@ def ver_rutina(rutina_id):
     if not rutina:
         flash("Rutina no encontrada", "error")
         return redirect(url_for('Purificadora.index'))
-    # Se utilizan las relaciones definidas en el modelo para obtener el usuario (cliente),
-    # el repartidor y la ruta.
     return render_template(
         'purificadora/ver_rutina.html',
         rutina=rutina
