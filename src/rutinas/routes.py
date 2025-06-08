@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash, session, g
-from src.rutinas.services import CrearRutina, ModificarRutina, EliminarRutina, get_visita_mas_proxima
+from src.rutinas.services import CrearRutina, ModificarRutina, EliminarRutina, obtener_visitas_proximas
 from src.database.coneccion import Rutina
 from src.usuarios.routes import login_required
 
@@ -62,5 +62,5 @@ def index():
 @login_required
 def ver_visita():
     usuario_id = session.get('usuario_id')
-    visitas = get_visita_mas_proxima(usuario_id)
+    visitas = obtener_visitas_proximas(usuario_id)
     return render_template('rutinas/ver_visita.html', visitas=visitas)
